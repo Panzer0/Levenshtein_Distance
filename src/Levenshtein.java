@@ -11,7 +11,7 @@ public class Levenshtein {
         return true;
     }
 
-    static int levenshteinDistance(@NotNull String word1, String word2) throws IllegalArgumentException
+    static double levenshteinDistance(@NotNull String word1, String word2) throws IllegalArgumentException
     {
         if(!isLowercaseAlpha(word1) || !isLowercaseAlpha(word2)) {
             throw new IllegalArgumentException("Words must consist of lowercase letters");
@@ -22,17 +22,17 @@ public class Levenshtein {
             return word1.isEmpty() ? word2.length() : word1.length();
         }
         // Deletion, achieved by skipping the lacking letter from word1 in word1
-        int delete = levenshteinDistance(word1.substring(1), word2) + 1;
+        double delete = levenshteinDistance(word1.substring(1), word2) + 1;
         // Insertion, achieved by skipping the lacking letter from word 1 in word2
-        int insert = levenshteinDistance(word1, word2.substring(1)) + 1;
+        double insert = levenshteinDistance(word1, word2.substring(1)) + 1;
         // Replacement, achieved by assuming the lacking letter is replaced and skipping it in both words
-        int replace = levenshteinDistance(word1.substring(1), word2.substring(1));
-        if(word1.charAt(0) != word2.charAt(0)) replace++;   // This action is free if the letters are equal
-
+        double replace = levenshteinDistance(word1.substring(1), word2.substring(1));
+        double weight = new NeighbourChecker().isNeighbour(word1.charAt(0), word2.charAt(0)) ? 0.5 : 1;
+        if(word1.charAt(0) != word2.charAt(0)) replace += weight;   // Replacement is free if both letters are equal
         return lowestOfThree(delete, insert, replace);  // Return the count from the most efficient path
     }
 
-    static int lowestOfThree(int ... args)
+    static double lowestOfThree(double ... args)
     {
         Arrays.sort(args);
         return args[0];
