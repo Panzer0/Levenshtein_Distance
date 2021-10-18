@@ -11,7 +11,7 @@ public class Levenshtein {
         return true;
     }
 
-    static double levenshteinDistance(@NotNull String word1, String word2) throws IllegalArgumentException
+    static double levQWERTY(@NotNull String word1, String word2) throws IllegalArgumentException
     {
         if(!isLowercaseAlpha(word1) || !isLowercaseAlpha(word2)) {
             throw new IllegalArgumentException("Words must consist of lowercase letters");
@@ -22,13 +22,14 @@ public class Levenshtein {
             return word1.isEmpty() ? word2.length() : word1.length();
         }
         // Deletion, achieved by skipping the lacking letter from word1 in word1
-        double delete = levenshteinDistance(word1.substring(1), word2) + 1;
+        double delete = levQWERTY(word1.substring(1), word2) + 1;
         // Insertion, achieved by skipping the lacking letter from word 1 in word2
-        double insert = levenshteinDistance(word1, word2.substring(1)) + 1;
+        double insert = levQWERTY(word1, word2.substring(1)) + 1;
         // Replacement, achieved by assuming the lacking letter is replaced and skipping it in both words
-        double replace = levenshteinDistance(word1.substring(1), word2.substring(1));
+        double replace = levQWERTY(word1.substring(1), word2.substring(1));
         double weight = new NeighbourChecker().isNeighbour(word1.charAt(0), word2.charAt(0)) ? 0.5 : 1;
         if(word1.charAt(0) != word2.charAt(0)) replace += weight;   // Replacement is free if both letters are equal
+
         return lowestOfThree(delete, insert, replace);  // Return the count from the most efficient path
     }
 
@@ -50,7 +51,7 @@ public class Levenshtein {
                 System.out.println("Enter the second word");
                 word2 = scanner.nextLine();
 
-                System.out.println("The distance is " + levenshteinDistance(word1, word2));
+                System.out.println("The distance is " + levQWERTY(word1, word2));
                 return;
             }
             catch (IllegalArgumentException e) {
