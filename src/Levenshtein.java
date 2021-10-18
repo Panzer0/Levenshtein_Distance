@@ -1,9 +1,21 @@
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Levenshtein {
-    static int levenshteinDistance(String word1, String word2)
+    static boolean isLowercaseAlpha(@NotNull String word) {
+        for(int i = 0; i < word.length(); i++) {
+            if(word.charAt(i) < 'a' || word.charAt(i) > 'z') return false;
+        }
+        return true;
+    }
+
+    static int levenshteinDistance(@NotNull String word1, String word2) throws IllegalArgumentException
     {
+        if(!isLowercaseAlpha(word1) || !isLowercaseAlpha(word2)) {
+            throw new IllegalArgumentException("Words must consist of lowercase letters");
+        }
         // If either string is empty, the entire word must be rewritten or deleted
         if (word1.isEmpty() || word2.isEmpty())
         {
@@ -28,14 +40,22 @@ public class Levenshtein {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
         String word1, word2;
 
-        System.out.println("Enter the first word");
-        word1 = scanner.nextLine();
-        System.out.println("Enter the second word");
-        word2 = scanner.nextLine();
+        // Attempt until legal arguments are entered
+        while(true) {
+            try {
+                System.out.println("Enter the first word");
+                word1 = scanner.nextLine();
+                System.out.println("Enter the second word");
+                word2 = scanner.nextLine();
 
-        System.out.println("The distance is " + levenshteinDistance(word1, word2));
+                System.out.println("The distance is " + levenshteinDistance(word1, word2));
+                return;
+            }
+            catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }
