@@ -1,9 +1,9 @@
 import java.util.TreeMap;
 
-public class KeyboardNeighbours {
+public class NeighbourChecker {
     private TreeMap<Character, String> neighbours;
 
-    public KeyboardNeighbours(TreeMap<Character, Character> neighbours) {
+    public NeighbourChecker() {
         this.neighbours = new TreeMap<>();
 
         // Admittedly not the most gentle way to put the data in
